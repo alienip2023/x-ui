@@ -80,21 +80,26 @@ install_base() {
 }
 
 #This function will be called when user installed x-ui out of sercurity
+# Define default values
+default_username="54321"
+default_password="54321"
+default_port="12345"
+
 config_after_install() {
     echo -e "${yellow}出于安全考虑，安装/更新完成后需要强制修改端口与账户密码${plain}"
-    read -p "确认是否继续,如选择n则跳过本次端口与账户密码设定[y/n]": config_confirm
-    if [[ x"${config_confirm}" == x"y" || x"${config_confirm}" == x"Y" ]]; then
-        read -p "请设置您的账户名:" config_account
-        echo -e "${yellow}您的账户名将设定为:${config_account}${plain}"
-        read -p "请设置您的账户密码:" config_password
-        echo -e "${yellow}您的账户密码将设定为:${config_password}${plain}"
-        read -p "请设置面板访问端口:" config_port
-        echo -e "${yellow}您的面板访问端口将设定为:${config_port}${plain}"
-        echo -e "${yellow}确认设定,设定中${plain}"
-        /usr/local/x-ui/x-ui setting -username ${config_account} -password ${config_password}
-        echo -e "${yellow}账户密码设定完成${plain}"
-        /usr/local/x-ui/x-ui setting -port ${config_port}
-        echo -e "${yellow}面板端口设定完成${plain}"
+    config_confirm="y"
+    config_account=$default_username
+    config_password=$default_password
+    config_port=$default_port
+
+    echo -e "${yellow}您的账户名将设定为:${config_account}${plain}"
+    echo -e "${yellow}您的账户密码将设定为:${config_password}${plain}"
+    echo -e "${yellow}您的面板访问端口将设定为:${config_port}${plain}"
+    echo -e "${yellow}确认设定,设定中${plain}"
+    /usr/local/x-ui/x-ui setting -username ${config_account} -password ${config_password}
+    echo -e "${yellow}账户密码设定完成${plain}"
+    /usr/local/x-ui/x-ui setting -port ${config_port}
+    echo -e "${yellow}面板端口设定完成${plain}"
     else
         echo -e "${red}已取消设定...${plain}"
         if [[ ! -f "/etc/x-ui/x-ui.db" ]]; then
