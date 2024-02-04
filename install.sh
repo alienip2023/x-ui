@@ -83,7 +83,7 @@ install_base() {
 # Define default values
 default_username="54321"
 default_password="54321"
-default_port="12345"
+default_port="54321"
 
 config_after_install() {
     echo -e "${yellow}出于安全考虑，安装/更新完成后需要强制修改端口与账户密码${plain}"
@@ -100,27 +100,7 @@ config_after_install() {
     echo -e "${yellow}账户密码设定完成${plain}"
     /usr/local/x-ui/x-ui setting -port ${config_port}
     echo -e "${yellow}面板端口设定完成${plain}"
-    else
-        echo -e "${red}已取消设定...${plain}"
-        if [[ ! -f "/etc/x-ui/x-ui.db" ]]; then
-            local usernameTemp=$(head -c 6 /dev/urandom | base64)
-            local passwordTemp=$(head -c 6 /dev/urandom | base64)
-            local portTemp=$(echo $RANDOM)
-            /usr/local/x-ui/x-ui setting -username ${usernameTemp} -password ${passwordTemp}
-            /usr/local/x-ui/x-ui setting -port ${portTemp}
-            echo -e "检测到您属于全新安装,出于安全考虑已自动为您生成随机用户与端口:"
-            echo -e "###############################################"
-            echo -e "${green}面板登录用户名:${usernameTemp}${plain}"
-            echo -e "${green}面板登录用户密码:${passwordTemp}${plain}"
-            echo -e "${red}面板登录端口:${portTemp}${plain}"
-            echo -e "###############################################"
-            echo -e "${red}如您遗忘了面板登录相关信息,可在安装完成后输入x-ui,输入选项7查看面板登录信息${plain}"
-        else
-            echo -e "${red}当前属于版本升级,保留之前设置项,登录方式保持不变,可输入x-ui后键入数字7查看面板登录信息${plain}"
-        fi
-    fi
 }
-
 install_x-ui() {
     systemctl stop x-ui
     cd /usr/local/
